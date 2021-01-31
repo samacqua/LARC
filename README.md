@@ -36,6 +36,6 @@ Each task has its own JSON. Each file has the general format below.
                     
 ## Other links
 
-[The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
-[Website for going through the collected data](http://samacquaviva.com/ARC-Turks/explore/)
+- [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
+- [Website for going through the collected data](http://samacquaviva.com/ARC-Turks/explore/)
 
