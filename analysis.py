@@ -83,9 +83,8 @@ def get_freq_dist(ngrams):
     return nltk.FreqDist(' '.join(w) for w in ngrams if not any(stop in w for stop in stopwords))
 
 
-def vocab_analysis(descs_df):
-
-    see_words, grid_words, do_words = tokenize_descriptions(descs_df, n=2)
+def ngrams_counts(descs_df, n=2):
+    see_words, grid_words, do_words = tokenize_descriptions(descs_df, n=n)
     tot_words = see_words + grid_words + do_words
 
     see_words_freq_dist = get_freq_dist(see_words)
@@ -113,20 +112,32 @@ def vocab_analysis(descs_df):
     tot_freq_dist.plot(30, cumulative=False)
 
 
-def compare_grid_sizes(descs_df):
+def get_num_colors(grid):
+    colors = set()
+    for row in grid:
+        for color in row:
+            colors.add(color)
+    return colors
+
+
+def compare_grids(descs_df):
     by_task = descs_df.groupby('task').successful_communication.any()
 
     successful_tasks = set([task for task, successful in by_task.to_dict().items() if successful])
     suc_sizes = []
+    suc_num_colors = []
     for task in successful_tasks:
         test_grid = tasks[task]['test'][0]['input']
         suc_sizes.append(len(test_grid) * len(test_grid[0]))
+        suc_num_colors.append(len(get_num_colors(test_grid)))
 
     unsuccessful_tasks = set(task_nums) - successful_tasks
     unsuc_sizes = []
+    unsuc_num_colors = []
     for task in unsuccessful_tasks:
         test_grid = tasks[task]['test'][0]['input']
         unsuc_sizes.append(len(test_grid) * len(test_grid[0]))
+        unsuc_num_colors.append(len(get_num_colors(test_grid)))
 
     print("Successful tasks test input size mean:", np.mean(suc_sizes))
     print("Unsuccessful tasks test input size mean:", np.mean(unsuc_sizes))
@@ -137,6 +148,56 @@ def compare_grid_sizes(descs_df):
     plt.hist(unsuc_sizes, bins=bins, alpha=0.5, label="Unsuccessful")
     plt.legend(loc='upper right')
     plt.show()
+
+    print("Successful tasks number colors mean:", np.mean(suc_num_colors))
+    print("Unsuccessful tasks number colors mean:", np.mean(unsuc_num_colors))
+
+    plt.title('Test input grid colors')
+    bins = list(range(1, 11))
+    plt.hist(suc_num_colors, bins=bins, alpha=0.5, label="Successful")
+    plt.hist(unsuc_num_colors, bins=bins, alpha=0.5, label="Unsuccessful")
+    plt.legend(loc='upper right')
+    plt.show()
+
+
+def ngram_dif(descs_df, n=2):
+    # compare n-grams in successful tasks vs unsuccessful tasks
+    successful_descs, unsuccessful_descs = descs_df[descs_df.successful_communication == True], \
+                                           descs_df[descs_df.successful_communication == False]
+
+    see_words_suc, grid_words_suc, do_words_suc = tokenize_descriptions(successful_descs, n=n)
+    see_words_unsuc, grid_words_unsuc, do_words_unsuc = tokenize_descriptions(unsuccessful_descs, n=n)
+    see_words, grid_words, do_words = see_words_suc + see_words_unsuc, grid_words_suc + grid_words_unsuc, \
+                                      do_words_suc + do_words_unsuc
+
+    suc_words = see_words_suc + grid_words_suc + do_words_suc
+    unsuc_words = see_words_unsuc + grid_words_unsuc + do_words_unsuc
+    words = see_words + grid_words + do_words
+
+    perc_difs = {}
+    seperator = '||'
+    extra_stopwords = ['.', ',', seperator, '...']
+    stopwords = nltk.corpus.stopwords.words('english') + extra_stopwords
+
+    for ngram in set(w for w in do_words_suc if not any(stop in w for stop in stopwords)):
+
+        # '(' and ')' have special meanings in pandas regex, so have to put \ in front
+        ngram = tuple([f'\\{word}' if word in ['(', ')'] else word for word in list(ngram)])
+        ngram_regex = '.{1,3}'.join(ngram)
+
+        suc_descs_w_word = successful_descs[successful_descs['do_description'].str.contains(ngram_regex, regex=True)]
+        perc_suc_descs = len(suc_descs_w_word.index) / len(successful_descs)
+
+        unsuc_descs_w_word = unsuccessful_descs[unsuccessful_descs['do_description'].str.contains(ngram_regex, regex=True)]
+        perc_unsuc_descs = len(unsuc_descs_w_word.index) / len(unsuccessful_descs)
+
+        ngram = tuple([word[1] if word in ['\(', '\)'] else word for word in list(ngram)])
+        perc_difs[ngram] = (perc_suc_descs, perc_unsuc_descs)
+
+    perc_difs = [(k, v) for k, v in perc_difs.items()]
+    perc_difs = sorted(perc_difs, key=lambda x: x[1][0] - x[1][1])
+    print("Worst n-grams:", perc_difs[:5])
+    print("Best n-grams:", perc_difs[-5:])
 
 
 if __name__ == '__main__':
@@ -155,50 +216,8 @@ if __name__ == '__main__':
         print("Not computed yet, creating and saving locally...")
         descs_df, builds_df = create_pandas_df(tasks)
 
-    compare_grid_sizes(descs_df)
+    compare_grids(descs_df)
 
-    # compare n-grams in successful tasks vs unsuccessful tasks
-    successful_descs, unsuccessful_descs = descs_df[descs_df.successful_communication == True], \
-                                           descs_df[descs_df.successful_communication == False]
-
-    see_words_suc, grid_words_suc, do_words_suc = tokenize_descriptions(successful_descs)
-    see_words_unsuc, grid_words_unsuc, do_words_unsuc = tokenize_descriptions(unsuccessful_descs)
-    see_words, grid_words, do_words = see_words_suc+see_words_unsuc, grid_words_suc+grid_words_unsuc, \
-                                      do_words_suc+do_words_unsuc
-
-    suc_words = see_words_suc + grid_words_suc + do_words_suc
-    common_suc_words = set([word for word, freq in get_freq_dist(suc_words).most_common(50)])
-    unsuc_words = see_words_unsuc + grid_words_unsuc + do_words_unsuc
-    common_unsuc_words = set([word for word, freq in get_freq_dist(unsuc_words).most_common(50)])
-    words = see_words + grid_words + do_words
-    common_words = set([word for word, freq in get_freq_dist(words).most_common(50)])
-
-    print("Words in successful descriptions but not in unsuccessful:", common_suc_words-common_unsuc_words)
-    print("Words in unsuccessful descriptions but not in unsuccessful:", common_unsuc_words-common_suc_words)
-
-    perc_difs = {}
-    for word in set(do_words_suc):
-        word = word[0]
-        print(word)
-
-        # '(' and ')' have special meanings in pandas regex, so have to put \ in front
-        if word in ['(', ')']:
-            word = '\\' + word
-
-        suc_descs_w_word = successful_descs[successful_descs['do_description'].str.contains(word)]
-        perc_suc_descs = len(suc_descs_w_word.index) / len(successful_descs)
-
-        unsuc_descs_w_word = unsuccessful_descs[unsuccessful_descs['do_description'].str.contains(word)]
-        perc_unsuc_descs = len(unsuc_descs_w_word.index) / len(unsuccessful_descs)
-
-        perc_dif = perc_suc_descs - perc_unsuc_descs
-        if word in ['\(', '\)']:
-            word = word[-1]
-        perc_difs[word] = perc_dif
-
-    perc_difs = [(k, v) for k, v in perc_difs.items()]
-    perc_difs = sorted(perc_difs, key=lambda x: x[1])
-    print("Worst words:", perc_difs[:5])
-    print("Best words:", perc_difs[-5:])
-
-    vocab_analysis(descs_df)
+    n = 2
+    ngram_dif(descs_df, n=n)
+    ngrams_counts(descs_df, n=n)
