@@ -34,6 +34,10 @@ Each task has its own JSON. Each file has the general format below.
                     - time
                     - max_idle_time
                     
+## Analysis file
+
+`analysis.py` has some basic analysis to start looking at the data.
+                    
 ## Other links
 
 - [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
