@@ -10,14 +10,7 @@ Annotations in LARC takes the form of a communication game, where
 one participant, the *describer* solves an ARC task and describes the underlying rules using language to a different participant, 
 the *builder*, who must solve the task on the new input using the description alone. 
 
-<style type="text/css">
-img[src~="thumbnail"] {
-   border: 4px solid gray;
-}
-</style>
-
-![collection process](https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg#thumbnail)
-
+![collection process](https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg)
 
 The entire dataset can be browsed at [the explorer interface](link todo)
 
