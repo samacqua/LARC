@@ -1,6 +1,8 @@
-# LARC -- Language-annotated Abstraction and Reasoning Corpus
+# Dataset 
 
-## Dataset format
+## Tasks
+
+The `tasks` folder contains collected data for all 400 tasks
 
 Each task has its own JSON. Each file has the general format below.
 
@@ -34,12 +36,17 @@ Each task has its own JSON. Each file has the general format below.
                     - time
                     - max_idle_time
                     
-## Analysis file
 
-`analysis.py` has some basic analysis to start looking at the data.
-                    
-## Other links
+## Annotated Phrases
 
-- [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
-- [Website for going through the collected data](http://samacquaviva.com/ARC-Turks/explore/)
+The file `annotated_phrases.csv` contains 2331 phrases from successfully communicated natural programs, of which 532 are manually tagged into 17 concepts (for detail refer to appendix section of [the paper](TODOLINK). The colomns of the csv are defined as follows:
+
+- phrase_number : can be used to uniquely refer to each phrase (1 through 2331)
+- task_number : takes value within 1 through 400, not all tasks are successfully communicated
+- task_name : the unique_id for the ARC tasks (ff805c23.json)
+- description_id : the unique_id assigned during annotation (441f999f-f6e8-444d-8bb6-5fbd6ab6a07a)
+- phrase_kind : natural programs are organized into three sections (input, grid_size, output)
+- nth_phrase_in_paragraph : for each section, the nth phrase within
+- phrase : the actual phrase itself ("a blue square on the top of the right")
+- tag_xxxxx : the 17 concepts, for detail see appendix section of paper
 
