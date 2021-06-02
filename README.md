@@ -1,4 +1,4 @@
-# ARC-Natural-Language-Descriptions
+# LARC -- Language-annotated Abstraction and Reasoning Corpus
 
 ## Dataset format
 
