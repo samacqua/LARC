@@ -12,7 +12,7 @@ the *builder*, who must solve the task on the new input using the description al
 
 ![collection process](https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg)
 
-<img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" style="width:200px;"/>
+<img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="200"/>
 
 The entire dataset can be browsed at [the explorer interface](link todo)
 
