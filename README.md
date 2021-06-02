@@ -6,11 +6,11 @@ This repository contains the language annotated data with supporting assets for 
 
 The original ARC data can be found here [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
 
-Annotations in LARC takes form of a communication game, where 
+Annotations in LARC takes the form of a communication game, where 
 one participant, the *describer* solves an ARC task and describes the underlying rules using language to a different participant, 
 the *builder*, who must solve the task on the new input using the description alone. 
 
-![put_image_here](https://i.pinimg.com/originals/2f/5f/76/2f5f7600a6bc708f38bdddaf2f25fa39.png)
+![collection process](https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg)
 
 The entire dataset can be browsed at [the explorer interface](link todo)
 
