@@ -39,7 +39,7 @@ Each task has its own JSON. Each file has the general format below.
 
 ## Annotated Phrases
 
-The file `annotated_phrases.csv` contains 2331 phrases from successfully communicated natural programs, of which 532 are manually tagged into 17 concepts (for detail refer to appendix section of [the paper](TODOLINK). The colomns of the csv are defined as follows:
+The file `annotated_phrases.csv` contains 2331 phrases from successfully communicated natural programs, of which 532 are manually tagged into 17 concepts (for detail refer to appendix section of [the paper](TODOLINK). It is stored as a csv with tab seperators. The colomns of the csv are defined as follows:
 
 - phrase_number : can be used to uniquely refer to each phrase (1 through 2331)
 - task_number : takes value within 1 through 400, not all tasks are successfully communicated
@@ -48,5 +48,5 @@ The file `annotated_phrases.csv` contains 2331 phrases from successfully communi
 - phrase_kind : natural programs are organized into three sections (input, grid_size, output)
 - nth_phrase_in_paragraph : for each section, the nth phrase within
 - phrase : the actual phrase itself ("a blue square on the top of the right")
-- tag_xxxxx : the 17 concepts, for detail see appendix section of paper
+- tag_xxxxx : the 17 concepts, for detail see appendix
 
