@@ -77,7 +77,7 @@ The folder `/summary/` contains several csv files that _summarizes_ the raw data
 
 - `/summary/join.csv` : relates task, description, and build together
     - task_number : the task number as they appear in the training dataset of ARC (matches the one in `task.csv`)
-    - description_id : a unique ID assigned to each description during annotation (matches the one in `description.csv')
+    - description_id : a unique ID assigned to each description during annotation (matches the one in `description.csv`)
     - build_id : a unique ID assigned to each build during annotation (matches the one in `build.csv`)
 
 ## Annotated Phrases
