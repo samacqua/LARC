@@ -16,6 +16,12 @@ the *builder*, who must solve the task on the new input using the description al
 
 The entire dataset can be browsed at [the explorer interface](https://samacqua.github.io/LARC/explore)
 
+```
+python3 -m http.server  
+localhost:8000/explore/
+
+```
+
 Citation
 ```
 @inproceedings{Larky Larc,
