@@ -28,12 +28,12 @@ function parseUrl(url) {
     let task = urlParams.get('task');
     if (!task) {
         task = TASKS[Math.floor(Math.random()*TASKS.length)];
-        document.location.href = `../explore?task=${task}`;
+        document.location.href = `.?task=${task}`;
     }
 
     let desc_id = urlParams.get('id');
     if (!desc_id) {
-        document.location.href = `../explore?task=${task}`;
+        document.location.href = `.?task=${task}`;
     }
     return {"task": task, "desc_id": desc_id };
 }
@@ -54,33 +54,6 @@ function updateUrl(response) {
         window.history.pushState({"task": response.task, "desc_id": response.desc_id, "pageTitle": document.title}, "", newRelativePathQuery);
     }
 }
-
-// // cache server requests
-// function cache_object(key, object) {
-//     sessionStorage.setItem(key, JSON.stringify(object));
-// }
-function get_cache(key) {
-    return JSON.parse(sessionStorage.getItem(key));
-}
-function find_obj(arr, prop, val) {
-    return arr.find(o =>  o[prop] == val);
-}
-// function get_task_descs_cache(task, desc_type) {
-//     return new Promise(function (resolve, reject) {
-//         let cached = get_cache(task+"_"+STUDY_NAME);
-//         if (cached) {
-//             return resolve(cached);
-//         } else {
-//             get_task_descriptions(task, desc_type).then(function (descriptions) {
-//                 cache_object(task+"_"+STUDY_NAME, descriptions);
-//                 return resolve(descriptions);
-//             }).catch(error => {
-//                 errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email samacqua@mit.edu");
-//                 console.error(error);
-//             });
-//         }
-//     });
-// }
 
 // for pausing and playing action sequences
 var ACTION_SEQUENCE_INTERVALS = [];
@@ -307,8 +280,8 @@ function createDescsPager(task, descriptions, desc_id) {
     // all descriptions
     $("#descriptions-pager").empty();
     $.each(descriptions, (i, desc) => {
-        let row = $(`<a style="line-height: 0.9em;" class="list-group-item list-group-item-action neumorphic-list-item" data-toggle="list" role="tab" 
-            href="description.html?task=${desc.task}&id=${desc.id}">Description ${i+1} </br><span class="desc_item_id">${desc.id}</span></a>`);
+        let row = $(`<a class="list-group-item list-group-item-action neumorphic-list-item" data-toggle="list" role="tab" 
+            href="description.html?task=${task}&id=${desc.id}">Description ${i+1}</a>`);    // <span class="desc_item_id">${desc.id}</span>
         if (desc.id == desc_id) {
             row.addClass("active");
         }
@@ -338,7 +311,7 @@ function createDescsPager(task, descriptions, desc_id) {
     });
 
     // task overview
-    $("#task-overview").attr("href", `../explore?task=${task}`);
+    $("#task-overview").attr("href", `.?task=${task}`);
     $('#overview-group a').click(function(){
         document.location.href = $(this).attr('href');
     });

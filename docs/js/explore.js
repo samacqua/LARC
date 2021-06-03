@@ -133,7 +133,7 @@ function load_tasks_test_pairs(tasks) {
 } 
 
 function send_to_new_task(task) {
-    document.location.href = `../explore?task=${task}`;
+    document.location.href = `.?task=${task}`;
 }
 
 /**
@@ -203,7 +203,7 @@ function start_walkthrough() {
 
     return new Promise(function (resolve, reject) {
 
-        const path = '../dataset/' + task_id + '.json';
+        const path = '../dataset/tasks/' + task_id + '.json';
         $.getJSON(path, json => {
             const descs = json['descriptions'];
             var descs_list = [];

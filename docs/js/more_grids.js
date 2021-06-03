@@ -88,18 +88,15 @@ function loadJSONTask(train, test) {
 
 function get_task(task_index) {
     return new Promise(function (resolve, reject) {
-        var subset = "training";
-        $.getJSON("https://api.github.com/repos/samacqua/ARC-Turks/contents/data/" + subset, function (tasks) {
-            var task = tasks[task_index];
-            $.getJSON(task["download_url"], function (json) {
-                return resolve(json);
-            });
+        const path = '../dataset/tasks/' + task_index + '.json';
+        $.getJSON(path, function (task) {
+            return resolve(task);
         }); 
     });
 }
 
 function get_task_paths() {
-    return TASKS.map(x => '../dataset/' + x + '.json');
+    return TASKS.map(x => '../dataset/tasks/' + x + '.json');
 }
 
 function loadTask(task_index) {
