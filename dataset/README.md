@@ -2,7 +2,7 @@
 
 ## Raw Data
 
-The `tasks_json` directory contains the *raw* collected data for all 400 tasks 
+The `/tasks_json` directory contains the *raw* collected data for all 400 tasks 
 
 Each task has its own JSON. Each file has the general format below.
 
@@ -38,9 +38,9 @@ Each task has its own JSON. Each file has the general format below.
                     
 ## Summary Data
 
-The folder `summary` contains several csv files that _summarizes_ the raw data. It is stored in a .csv file for easier access. Certain information, such as `action_sequence` are omitted from this summary.
+The folder `/summary/` contains several csv files that _summarizes_ the raw data. It is stored in a .csv file for easier access. Certain information, such as action_sequence are omitted from this summary.
 
-- `task.csv` : high level summary of each task
+- `/summary/task.csv` : high level summary of each task
     - task_number : the task number as they appear in the training dataset of ARC (1 through 400)
     - task_name	: the unique_id for the ARC tasks (ff805c23.json)
     - test_input_size : grid size of the test input
@@ -49,7 +49,7 @@ The folder `summary` contains several csv files that _summarizes_ the raw data. 
     - example_output_sizes	: grid sizes of the example outputs
     - number_of_examples : total number of example input/outputs
 
-- `description.csv` : summary for all the descriptions
+- `/summary/description.csv` : summary for all the descriptions
     - description_id : a unique ID assigned to each description during annotation
     - user_id : a unique identifier for the participant giving this description
     - description_input	: description paragraph of the input
@@ -65,7 +65,7 @@ The folder `summary` contains several csv files that _summarizes_ the raw data. 
     - description_synthesis_time : how long did it take for this describer to come up with a description
     - verification_time : how long did it take for this describer to verify this description
 
-- `build.csv` : summary of all the builds
+- `/summary/build.csv` : summary of all the builds
     - build_id : a unique ID assigned to each build during annotation	
     - user_id :  a unique identifier for the participant giving this description
     - is_success : is the build successful ?
@@ -75,14 +75,14 @@ The folder `summary` contains several csv files that _summarizes_ the raw data. 
     - user_num_prior_build_experiences	: how many times did this builder build before giving this description
     - build_time : how long did the builder spent total
 
-- `join.csv` : relates task, description, and build together
+- `/summary/join.csv` : relates task, description, and build together
     - task_number : the task number as they appear in the training dataset of ARC (matches the one in `task.csv`)
     - description_id : a unique ID assigned to each description during annotation (matches the one in `description.csv')
     - build_id : a unique ID assigned to each build during annotation (matches the one in `build.csv`)
 
 ## Annotated Phrases
 
-The file `annotated_phrases.csv` contains 2331 phrases from successfully communicated natural programs, of which 532 are manually tagged into 17 concepts (for detail refer to appendix section of [the paper](TODOLINK). It is stored as a csv with tab seperators. The colomns of the csv are defined as follows:
+The file `/annotated_phrases.csv` contains 2331 phrases from successfully communicated natural programs, of which 532 are manually tagged into 17 concepts (for detail refer to appendix section of [the paper](TODOLINK). It is stored as a csv with tab seperators. The colomns of the csv are defined as follows:
 
 - phrase_number : can be used to uniquely refer to each phrase (1 through 2331)
 - task_number : the task number as they appear in the training dataset of ARC (1 through 400), not all tasks are successfully communicated
