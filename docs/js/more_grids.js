@@ -88,7 +88,7 @@ function loadJSONTask(train, test) {
 
 function get_task(task_index) {
     return new Promise(function (resolve, reject) {
-        const path = '../dataset/tasks/' + task_index + '.json';
+        const path = '../dataset/tasks_json/' + task_index + '.json';
         $.getJSON(path, function (task) {
             return resolve(task);
         }); 
@@ -96,7 +96,7 @@ function get_task(task_index) {
 }
 
 function get_task_paths() {
-    return TASKS.map(x => '../dataset/tasks/' + x + '.json');
+    return TASKS.map(x => '../dataset/tasks_json/' + x + '.json');
 }
 
 function loadTask(task_index) {

@@ -10,7 +10,7 @@ the *builder*, who must solve the task on the new input using the description al
 <img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="75%"/>
 </p>
 
-The entire dataset can be browsed at [the explorer interface](link todo)
+The entire dataset can be browsed at [the explorer interface](https://samacquaviva.com/LARC)
 
 Citation
 ```
