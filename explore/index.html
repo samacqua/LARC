@@ -24,6 +24,12 @@
 
 <body>
     <div class="container"> 
+
+        <div id="loader">
+            <h5 id="loading_next_title">Loading tasks</h5>
+            <div class="spinner-border text-primary"></div>
+        </div>
+
         <div class="row">
             <div class="col-lg-3">
                <div class="sticky-top" data-intro="">
@@ -63,7 +69,7 @@
                     </div>
                 </div>
 
-                </br>
+                <!-- </br>
                 <h2 class="neumorphic-text">Descriptions Overview</h2>
                 <div class="row" data-intro="A measure of how well each description was interpreted. A 1.0 success score means every user interpreted the description correctly on their first attempt." data-position="right">
                     <h4 id="desc-count">Descriptions count: 0</h4>
@@ -83,14 +89,14 @@
                             <canvas class="chart" id="do-desc-wc-chart"></canvas>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
     </div> 
 
-    <div class="modal modal-lg fade" id="browse-tasks-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal modal-md fade" id="browse-tasks-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="exampleModalLongTitle">List of Tasks</h3>
@@ -104,9 +110,9 @@
                         <tr>
                             <th scope="col" data-field="preview">Test preview</th>
                             <th scope="col" data-field="number">Task #</th>
-                            <th scope="col" data-field="descriptions"># Descriptions</th>
-                            <th scope="col" data-field="interactions"># Interactions</th>
-                            <th scope="col">Select</th>
+                            <!-- <th scope="col" data-field="descriptions"># Descriptions</th>
+                            <th scope="col" data-field="interactions"># Interactions</th> -->
+                            <!-- <th scope="col">Select</th> -->
                         </tr>
                     </thead>
                     <tbody class="table"></tbody>

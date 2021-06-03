@@ -33,7 +33,7 @@ img {
     max-height: 70%;
     width: 300px;
 	height: 200px;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--background-color);
     border-radius: 10px;
     text-align: center;
     display: none;

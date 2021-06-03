@@ -1,5 +1,5 @@
 
-const NUM_TASKS = 10;
+const NUM_TASKS = 400;
 const TASKS = [...Array(NUM_TASKS).keys()];
 const GRID_SIZE_PREFIX = "The output grid size...";
 const SHOULD_SEE_PREFIX = "In the input, you should see...";

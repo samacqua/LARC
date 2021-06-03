@@ -136,59 +136,76 @@ function send_to_new_task(task) {
     document.location.href = `.?task=${task}`;
 }
 
+var LOADED = false;
 /**
  * load tasks into table so user can browse and choose a task
  */
 function load_tasks_to_browse() {
 
-    load_tasks_test_pairs(TASKS).then(pairs => {
+    if (!LOADED) {
+        show_loader();
 
-        var num_descriptions_list = [];
-        var num_interactions_list = [];
+        load_tasks_test_pairs(TASKS).then(pairs => {
 
-        // $.each(TASKS, (i, task) => {
-        //     // accidentally deleted this section
-        //     // TODO: Fix this
-        //     // if (counts[task]) {
-        //     //     num_descriptions_list.push(counts[task]['descriptions']);
-        //     //     num_interactions_list.push(counts[task]['interactions']);
-        //     // }
-        // });
-
-        task_list = [];
-        for (i=0;i<TASKS.length;i++) {
-            let task_num = TASKS[i];
-            let num_descs = num_descriptions_list[i];
-            let num_interactions = num_interactions_list[i];
-
-            task_list.push({'number': task_num, 'descriptions': num_descs, 'interactions': num_interactions});
-        }
-
-        $('#table').bootstrapTable({
-            data: task_list,
-            columns: [ { 
-                formatter : function(value,row,index) {
-                    let test_pair = pairs[row.number];
-                    let div = $("<div></div>");
-                    fill_div_with_IO(div, array_to_grid(test_pair.input), array_to_grid(test_pair.output));
-
-                    // return div as html
-                    return div.wrap('<p/>').parent().html();
-                }
-            }, { sortable: true },{ sortable: true },{ sortable: true },  
-            {
-            field: 'operate',
-            title: 'Select',
-            align: 'center',
-            valign: 'middle',
-            clickToSelect: true,
-            formatter : function(value,row,index) {
-                return '<button class="btn btn-secondary load-task-btn" onclick="send_to_new_task(' + row.number + ');" task="'+row.number+'" data-dismiss="modal">Select</button> ';
+            var num_descriptions_list = [];
+            var num_interactions_list = [];
+    
+            // $.each(TASKS, (i, task) => {
+            //     // accidentally deleted this section
+            //     // TODO: Fix this
+            //     // if (counts[task]) {
+            //     //     num_descriptions_list.push(counts[task]['descriptions']);
+            //     //     num_interactions_list.push(counts[task]['interactions']);
+            //     // }
+            // });
+    
+            task_list = [];
+            for (let i=0;i<TASKS.length;i++) {
+                let task_num = TASKS[i];
+                let num_descs = num_descriptions_list[i];
+                let num_interactions = num_interactions_list[i];
+    
+                // task_list.push({'number': task_num, 'descriptions': num_descs, 'interactions': num_interactions});
+                task_list.push({'number': task_num});
             }
+    
+            $('#table').bootstrapTable({
+                data: task_list,
+                columns: [ { 
+                    formatter : function(value,row,index) {
+                        let test_pair = pairs[row.number];
+                        let div = $("<div></div>");
+                        fill_div_with_IO(div, array_to_grid(test_pair.input), array_to_grid(test_pair.output));
+    
+                        // return div as html
+                        return div.wrap('<p/>').parent().html();
+                    }
+                }, 
+                { sortable: false },
+                // {
+                //     field: 'operate',
+                //     title: 'Select',
+                //     align: 'center',
+                //     valign: 'middle',
+                //     clickToSelect: true,
+                //     formatter : function(value,row,index) {
+                //         return '<button class="btn btn-secondary load-task-btn" onclick="send_to_new_task(' + row.number + ');" task="'+row.number+'" data-dismiss="modal">Select</button> ';
+                //     }
+                // }
+                ]
+            });
+    
+            for (let i=0;i<TASKS.length;i++) {
+                $('tr[data-index=' + i + ']').children().click(function() {
+                    send_to_new_task(i);
+                });
             }
-        ]      
+
+            LOADED = true;
+            hide_loader();
+
         });
-    });
+    }
 }
 
 function start_walkthrough() {

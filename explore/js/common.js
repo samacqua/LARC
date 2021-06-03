@@ -113,6 +113,10 @@ function show_loader() {
     $("#loader").fadeIn();
 }
 
+function hide_loader() {
+    $("#loader").fadeOut();
+}
+
 function array_copy(arr) {
     return JSON.parse(JSON.stringify(arr));
 }

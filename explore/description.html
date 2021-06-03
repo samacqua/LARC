@@ -25,6 +25,12 @@
 
 <body>
     <div class="container"> 
+
+        <div id="loader">
+            <h5 id="loading_next_title">Loading tasks</h5>
+            <div class="spinner-border text-primary"></div>
+        </div>
+
         <div class="row">
             <div class="col-lg-3">
                 <div class="sticky-top" data-intro="" data-position="left">
@@ -118,8 +124,8 @@
         </div>
     </div> 
 
-    <div class="modal modal-lg fade" id="browse-tasks-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal modal-md fade" id="browse-tasks-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="exampleModalLongTitle">List of Tasks</h3>
@@ -128,14 +134,14 @@
                     </button>
                 </div>
         
-                <table id="table" data-height="460">
+                <table id="table" data-height="500">
                     <thead>
                         <tr>
-                            <th scope="col" data-field="preview">Test preview</th>
+                            <th scope="col" data-field="preview">Task</th>
                             <th scope="col" data-field="number">Task #</th>
-                            <th scope="col" data-field="descriptions"># Descriptions</th>
-                            <th scope="col" data-field="interactions"># Interactions</th>
-                            <th scope="col">Select</th>
+                            <!-- <th scope="col" data-field="descriptions"># Descriptions</th>
+                            <th scope="col" data-field="interactions"># Interactions</th> -->
+                            <!-- <th scope="col">Select</th> -->
                         </tr>
                     </thead>
                     <tbody class="table"></tbody>
