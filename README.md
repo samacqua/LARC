@@ -1,9 +1,13 @@
 # Language-annotated Abstraction and Reasoning Corpus (LARC)
 
-This repository contains the language annotated data with supporting assets for LARC, as discussed in [Communicating Natural Programs to Humans and Machines](link todo)
+This repository contains the language annotated data with supporting assets for LARC
+
+*"How can we build intelligent systems that achieve human-level performance on challenging and structured domains (like ARC), with or without additional human guidance? We posit the answer may be found in studying natural programs - instructions humans give to each other to communicate how to solve a task. Like a computer program, these instructions can be reliably "executed" by others to produce intended outputs."*
+
+A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines](link todo)
 
 Annotations in LARC takes the form of a communication game, where 
-one participant, the *describer* solves an ARC task and describes the underlying rules using language to a different participant, 
+one participant, the *describer* solves an ARC task and describes the solution to a different participant, 
 the *builder*, who must solve the task on the new input using the description alone. 
 
 <p align="center">
@@ -18,7 +22,7 @@ Citation
 }
 ```
 
-The original ARC data can be found here [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
+The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
 
 ## Contents
 - `dataset` contains the language-annotated ARC tasks and successful natural program phrase annotations
