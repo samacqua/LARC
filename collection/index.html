@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="An MIT study on the efficacy of human communication of abstract patterns.">
+    <title>ARC labeling interface</title>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- CSS files -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/grids.css">
+    <link rel="stylesheet" type="text/css" href="css/testing_interface.css">
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar-complete">
+        <div class="progress md-progress">
+            <div class="progress-bar success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="11">
+            </div>
+        </div>
+
+        <div class="progress-meter">
+            <div class="meter meter-right" style="width: 80%;" id="done_label"><span class="meter-text">All Done!</span>
+            </div>
+            <div class="meter meter-right" style="width: 20%;" id="tutorial_label"><span class="meter-text">Finished Practice and Instructions</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actual Body -->
+    <div id="container-fluid">
+
+        <div id="loader">
+            <h5 id="loading_next_title">Loading your next task</h5>
+            <div class="spinner-border text-primary"></div>
+        </div>
+
+        <div class="alert alert-success" id="info_display"></div>
+        <div class="alert alert-danger" id="error_display"></div>
+
+        <div id="tut-layer">
+            <div id="dark-layer"></div>
+            <div id="tut-message"></div>
+            <div id="tut-continue-message">Click anywhere to continue</div>
+            <div id="trans-layer"></div>
+        </div>
+
+        <span id="feedback_btn_highlight"><button id="feedback_btn" type="button" class="btn btn-success" onclick="$('#bug_report_modal').modal('show');">Report Issue</button></span>
+
+        <div class="row">
+            <div id="objective-col" class="col-md">
+                <h3 class="objective"><b>Objective:</b></h3>
+                <h5 class="objective" id="objective-text">Create the correct output based on the description and input
+                    grid.</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" id="description-col">
+                <div class="col-header">
+                    <h1 class="col-title">Description</h1>
+                </div>
+
+                <div id="description-text">
+                    <p id="see_p">In the input, you should see...</p>
+                    <p id="grid_size_p">The output grid size...</p>
+                    <p id="do_p">To make the output, you have to...</p>
+                    <hr>
+                </div>
+
+                <div id="examples_area">
+                    <h3>Example Transformation</h3>
+                    <div id="task_preview">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" id="input-col">
+                <div class="col-header">
+                    <h1 class="col-title">Input</h1>
+                </div>
+
+                <div id="evaluation_input" class="selectable_grid">
+                    Loading...
+                </div>
+            </div>
+
+            <div class="col-md-4" id="output-col">
+
+                <div class="col-header">
+                    <h1 class="col-title">Output</h1>
+                </div>
+
+                <div id="output_grid">
+                    <div class="editable_grid selectable_grid">
+                        <div class="grid_row">
+                            <div class="cell" symbol="0" x="0" y="0"></div>
+                            <div class="cell" symbol="0" x="0" y="1"></div>
+                            <div class="cell" symbol="0" x="0" y="2"></div>
+                        </div>
+                        <div class="grid_row">
+                            <div class="cell" symbol="0" x="1" y="0"></div>
+                            <div class="cell" symbol="0" x="1" y="1"></div>
+                            <div class="cell" symbol="0" x="1" y="2"></div>
+                        </div>
+                        <div class="grid_row">
+                            <div class="cell" symbol="0" x="2" y="0"></div>
+                            <div class="cell" symbol="0" x="2" y="1"></div>
+                            <div class="cell" symbol="0" x="2" y="2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3" id="resize_control_btns">
+                    <input type="text" id="output_grid_size" class="form-control" placeholder="3x3" value="3x3">
+                    <div class="input-group-append">
+                      <button class="btn btn-secondary" type="button" onclick="resizeOutputGrid(); pre_continue();">resize output</button>
+                    </div>
+                </div>
+
+                <div id="toolbar_and_symbol_picker">
+                    <div id="edit_control_btns">
+                        <span id="copy-from-input"><button type="button" class="btn btn-secondary" onclick="copyFromInput(); pre_continue();">Copy input grid</button></span>
+                        <button type="button" class="btn btn-secondary" onclick="resetOutputGrid();">Make output grid black</button>
+                    </div>
+                    <div id="toolbar">
+                        <div>
+                            <div id="draw" style="float:left;">
+                                <input type="radio" id="tool_edit" name="tool_switching" value="edit" checked>
+                                <label for="tool_edit">Draw</label>
+                            </div>
+
+                            <div id="floodfill" style="float:left;">
+                                <input type="radio" id="tool_floodfill" name="tool_switching" value="floodfill">
+                                <label for="tool_floodfill">Flood fill</label>
+                            </div>
+
+                            <div id="copypaste" style="float:left;">
+                                <input type="radio" id="tool_select" name="tool_switching" value="select">
+                                <label for="tool_select">Copy-Paste</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="symbol_picker">
+                        <div class="symbol_preview symbol_0 selected-symbol-preview" symbol="0"></div>
+                        <div class="symbol_preview symbol_1" symbol="1"></div>
+                        <div class="symbol_preview symbol_2" symbol="2"></div>
+                        <div class="symbol_preview symbol_3" symbol="3"></div>
+                        <div class="symbol_preview symbol_4" symbol="4"></div>
+                        <div class="symbol_preview symbol_5" symbol="5"></div>
+                        <div class="symbol_preview symbol_6" symbol="6"></div>
+                        <div class="symbol_preview symbol_7" symbol="7"></div>
+                        <div class="symbol_preview symbol_8" symbol="8"></div>
+                        <div class="symbol_preview symbol_9" symbol="9"></div>
+                    </div>
+                </div>
+
+                <div id="submit_quit_buttons">
+                    <button type="button" id="check-btn" class="btn btn-success" onclick="check_grid(); pre_continue('check');">Check!</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#giveUpModal">Give
+                        up</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Consent Modal -->
+    <div class="modal fade" id="consentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Informed Consent</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>In this study, you will interpret descriptions of an abstract pattern that you observe in grids.</p>
+                    <p>By answering the following questions, you are participating in a study performed by cognitive
+                        scientists in the MIT Department of Brain and Cognitive Science. If you have questions about
+                        this research, please contact Sam Acquaviva at samacqua@mit.edu. Your participation in this
+                        research is voluntary. You may decline to answer any or all of the following questions. You may
+                        decline further participation, at any time, without adverse consequences. Your anonymity is
+                        assured; the researchers who have requested your participation will not receive any personal
+                        identifying information about you. By clicking <b>'I AGREE'</b> you indicate your consent to
+                        participate in this study.</p>
+                    <p>Please complete this study on a computer in either Chrome or Safari.</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- from https://stackoverflow.com/a/44391959/5416200 to address an issue I realize wasn't there-->
+                    <button type="button" class="btn btn-primary"
+                        onclick="show_intro();">I
+                        AGREE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NL Introduction Modal -->
+    <div class="modal fade" id="IntroModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Overview of Your Role</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+
+                    <p>If I gave you this grid:</p>
+
+                    <img src="img/grid_ex.jpg">
+
+                    <p>And I told you:</p>
+                    <p><strong>"You should see a 3x3 grid with a colored dot in the middle. Create a 5x5 grid that is
+                            filled with the middle color."</strong></p>
+                    <p> Would you be able to make this transformation? Would you create the correct output shown below?</p>
+
+                    <p><i>(hover over to show answer)</i></p>
+                    <img class="hidden_blurred" src="img/grid_ex_ans.jpg">
+
+                    <p>This is a simple example of the kind of tasks you will solve in this study. You will be given a
+                        description of a transformation, and you will have to use that description to create the correct
+                        output.</p>
+                    <p><b>It is important that you use as few attempts as possible. The more tasks you complete, and the
+                            fewer attempts you take on each, the bigger reward you will get.</b></p>
+
+                    <p>This study will take <b>45 minutes</b>. You will be paid <b>$6.50</b> for completing the session, and you will be paid an <b>additional $0.25</b> for every task you get correct.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="send_user_complete_item('consent_instructions_time', true);continue_tutorial();">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div class="modal fade" id="quiz_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Testing Understanding</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+
+                    <p>Answer these questions to ensure that you understand the instructions.</p>
+
+                    <div id="quiz"></div>
+                    <div id="results"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="check_quiz()">Submit Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Practice</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>Great! You successfully completed the quiz. Now, you will be given a description to solve on your own.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick="update_progress_bar(inc=INSTRUCTIONS_TIME); send_user_complete_item('quiz_time', false); scroll_highlight_objective();
+                            GIVE_UP_HINT = setTimeout(function() { infoMsg('If you cannot figure out the pattern, press \'give up\' to see the solution.') }, 60000);"
+                        data-dismiss="modal">Okay!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Give-up Modal -->
+    <div class="modal fade" id="giveUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Solution</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <video id="give_up_vid" autoplay loop muted playsinline>  
+                        <source src="img/give_up.mp4" type="video/mp4">  
+                    </video> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finished -->
+    <div class="modal fade" id="done_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Finished Solving Tasks</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+
+                    <p>Great job finishing the tutorial.</p>
+                    <p>You will now be given tasks until you do 45 minutes of work. For each task, you will be given credit towards completion.
+                        If we expect a task to take 5 minutes, you will get 5 minutes of credit, no matter how long you take.</p>
+                    <p>We expect you to take longer to get tasks correct. So, <b>if you fail a task, you will get less credit towards completion</b>.</p>
+                    <p>You will be paid <b>$6.50</b> for completing the session, and you will be paid an <b>additional $0.25</b> for every task you get correct.</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button onclick="exit_done_modal()" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ongoing-study-modal -->
+    <div class="modal fade" id="ongoing-study-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Ongoing MTurk Experiment</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+
+                    <p>We are currently collecting data from MTurk. So, your responses will be recorded to a seperate database because you are not an MTurk.</p>
+                    <p>If you are an MTurk and this is a mistake, please email <b>samacqua@mit.edu</b><div class=""></div></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button onclick="$('#ongoing-study-modal').one('hidden.bs.modal', function() { $('#consentModal').modal('show'); }).modal('hide');" type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bug Report Modal -->
+    <div class="modal fade" id="bug_report_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Report Issue</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <label for="bug_desc_textarea">Please describe the issue. If the issue persists and stops you from completing the study, please email <b>samacqua@mit.edu</b>.</label>
+                    <textarea class="form-control" id="bug_desc_textarea" rows="3" placeholder="describe the issue"></textarea>
+                </br>
+                    <label for="email-input">If you want, leave your email so that we can contact you about your issue.</label>
+                    <input id="email-input" type="text" class="form-control" placeholder="email">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="store_bug_report();" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finished Modal -->
+    <div class="modal fade" id="study_complete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Study Complete</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>We have finished collecting data for this study.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="open(location, '_self').close();">Exit study</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS files -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+
+    <!-- Bootstrap-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script src="js/index.js"></script>
+    <script src="js/grids.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/more_grids.js"></script>
+    <script src="js/fire.js"></script>
+    <script src="js/bandit.js"></script>
+
+    <!-- Don't allow exit from modal -->
+    <script>
+        $.fn.modal.prototype.constructor.Constructor.Default.backdrop = 'static';
+        $.fn.modal.prototype.constructor.Constructor.Default.keyboard = false;
+    </script>
+</html>

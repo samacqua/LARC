@@ -1,0 +1,21 @@
+.attempt-divs {
+    width: 33%; 
+    float: left; 
+    padding: 5px;
+}
+
+#description-text-recap {
+    background-color: rgb(204, 204, 204);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#description-text-recap p {
+    margin-bottom: 0.4em !important;
+}
+
+#user-attempts {
+    background-color: rgb(204, 204, 204);
+    border-radius: 5px;
+    overflow: auto;
+}

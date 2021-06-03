@@ -1,0 +1,19 @@
+/* Quiz */
+
+.question {
+    font-weight: 600;
+}
+.answers {
+    margin-bottom: 20px;
+}
+
+/* Task introduction */
+.hidden_blurred {
+    width: 100% !important;
+    -webkit-filter: blur(15px) grayscale(100%);
+    filter: blur(15px) grayscale(100%);
+}
+.hidden_blurred:hover {
+    -webkit-filter: blur(0px) grayscale(0%);
+    filter: blur(0px) grayscale(0%);
+}

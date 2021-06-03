@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="The creation process of descriptions for an MIT study on the efficacy of human communication of abstract patterns.">
+    <title>ARC labeling interface</title>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- CSS files -->
+    <!-- highlight-within-textarea-->
+    <link href="css/jquery.highlight-within-textarea.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/speaker.css">
+    <link rel="stylesheet" type="text/css" href="css/grids.css">
+    <link rel="stylesheet" type="text/css" href="css/testing_interface.css">
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-complete">
+        <div class="progress md-progress">
+            <div class="progress-bar success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="11">
+            </div>
+        </div>
+
+        <div class="progress-meter">
+            <div class="meter meter-right" style="width: 50%;" id="done_label"><span class="meter-text">All Done!</span>
+            </div>
+            <div class="meter meter-right" style="width: 25%;" id="tutorial_label"><span class="meter-text">Practice</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="objective-col" class="col-md">
+            <h3 class="objective"><b>Objective:</b></h3>
+            <h5 class="objective" id="objective-text">Using the previous descriptions as reference, describe the common
+                pattern in the input-output grids.</h5>
+        </div>
+    </div>
+
+    <div id="container-fluid">
+
+        <div id="loader">
+            <h5 id="loading_next_title">Loading your next task</h5>
+            <div class="spinner-border text-primary"></div>
+        </div>
+
+
+        <div class="alert alert-success" id="info_display"></div>
+        <div class="alert alert-danger" id="error_display"></div>
+
+        <div id="tut-layer">
+            <div id="dark-layer"></div>
+            <div id="tut-message"></div>
+            <div id="tut-continue-message">Click to continue</div>
+            <div id="trans-layer"></div>
+        </div>
+
+        <button id="feedback_btn" type="button" class="btn btn-success" onclick="$('#bug_report_modal').modal('show');">Report Issue</button>
+
+        <div class="row">
+            <div class="col-md-4" id="io_ex_col">
+                <div class="col-header">
+                    <h1>Input-Output Pairs</h1>
+                </div>
+
+                <div id="task_preview">
+                    Loading...
+                </div>
+
+            </div>
+
+            <div class="col-md-4" id="description_ex_col">
+                <div class="col-header">
+                    <h1 class="col-title">Old Descriptions</h1>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center" id="paginator"></ul>
+                </nav>
+
+                <div id="ex_descriptions">
+                    <p id="ex_see_desc" class="unselectable"></p>
+                    <p id="ex_size_desc" class="unselectable"></p>
+                    <p id="ex_do_desc" class="unselectable"></p>
+                    <p id="desc_success" class="unselectable"></p>
+                </div>
+
+            </div>
+
+            <div class="col-md-4" id="description_col">
+
+                <div class="col-header">
+                    <h1>Description</h1>
+                </div>
+
+                <div class="form-group" id="see_desc_form">
+                    <label for="what_you_see"><b>What should you expect to see in the input grid?</b> <i>(continue the sentence)</i></label>
+                    <textarea class="form-control descriptions" id="what_you_see" rows="2"
+                        placeholder="In the input, you should see..."></textarea>
+                </div>
+
+                <div>
+                    <ul id="word-warning-what_you_see"></ul>
+                </div>
+
+                <div class="form-group" id="grid_size_form">
+                    <label for="grid_size_desc"><b>How does the grid size change?</b> <i>(continue the sentence)</i></label>
+                    <textarea class="form-control descriptions" id="grid_size_desc" rows="1"
+                        placeholder="The output grid size..."></textarea>
+                </div>
+
+                <div>
+                    <ul id="word-warning-grid_size_desc"></ul>
+                </div>
+
+                <div class="form-group" id="do_desc_form">
+                    <label for="what_you_do"><b>What do you do to create the output grid?</b> <i>(continue the sentence)</i></label>
+                    <textarea class="form-control descriptions" id="what_you_do" rows="2"
+                        placeholder="To make the output, you have to..."></textarea>
+                </div>
+
+                <div>
+                    <ul id="word-warning-what_you_do"></ul>
+                </div>
+
+                <div class="form-group" id="select_ex_io">
+                    <label for="exampleFormControlSelect1">Which input-output grid example do you want to pass on as
+                        part of your description?</label>
+                    <select class="form-control" id="selectExampleIO"></select>
+                </div>
+
+                <div id="desc_col_buttons">
+                    <span id="submit_btn"><button onclick="$('#submitModal').modal('show')" type="button"
+                        class="btn btn-primary desc-buttons">Submit</button></span> 
+                    <span id="give_up_btn"><button type="button" class="btn btn-danger desc-buttons" data-toggle="modal"
+                        data-target="#giveUpModal">Give up</button></span>
+                </div>
+            </br>
+                <button onclick="$('#instructionsModal').modal('show')" type="button" class="btn btn-secondary">Show
+                    Instructions</button>
+                </br></br>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Instructions</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>For this task, you will not be using a description of a transformation to make the correct grid.
+                        Instead, you will be <i>creating the description.</i></p>
+                    <p>You are shown a few examples of the pattern on the left. <mark>Every input-output pair shares a common pattern</mark>.
+                        You have to recognize the pattern, then describe the pattern so that someone, given a new input grid, 
+                        can create the correct output grid.</p>
+                    <p>This task should take around <b>6 minutes</b>.</p>
+                    <p>You will get a <b>$0.25</b> bonus for each person who uses your description correctly. <mark>So, if 5 people use your description correctly, you will get a $1.00 bonus.</mark></p>
+                    </p>
+                    <p>Ater you submit your description, you will have to demonstrate you understand the pattern. If you fail here, you will be given <mark>no bonus and only partial credit towards completion.</mark></p>
+                    <p><b>If you write a nonsense description and do not give a good faith effort, <mark>you will not be approved</mark>. If you try your best for every task, you will always be approved.
+                        We will manually review every user.</b></p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="continue_tutorial()" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal Instructions Modal -->
+    <div class="modal fade" id="minimalInstructionsModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Instructions</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>For this task, you will once again <i>create the description.</i></p>
+                    <p>You are shown a few examples of the pattern on the left. <mark>Every input-output pair shares a common pattern</mark>. You have to recognize the pattern, then
+                        describe the pattern so that someone, given a new input grid, can create the
+                        correct output grid.</p>
+                    <p>This task should take around <b>6 minutes</b>.</p>
+                    <p>You will get a <b>$0.25</b> bonus for each person who uses your description correctly. <mark>So, if 5 people use your description correctly, you will get a $1.25 bonus.</mark></p>
+                    <p>Ater you submit your description, you will have to demonstrate you understand the pattern. If you fail here, you will be given <mark>no bonus and only partial credit towards completion.</mark></p>
+                    <p><b>If you write a nonsense description and do not give a good faith effort,
+                        <mark>you will not be approved</mark>. If you try your best for every task, you will always be approved.
+                        We will manually review every user.
+                    </b></p>
+                </p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="scroll_highlight_objective();" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Submission Modal -->
+    <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Confirm submission</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>Are you sure that your description is ready to submit?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button onclick="submit()" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Add Word Modal -->
+    <div class="modal fade" id="addWordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Confirm adding word</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>Are you sure that you want to add the word:
+                    <p>
+                    <p id="word_modal_text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button onclick="add_current_candidate_word()" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Give-up Modal -->
+    <div class="modal fade" id="giveUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Give Up</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <p>Are you sure that you can't determine the pattern? <strong>If you give up, you will not recieve credit towards completion for this task.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I'll try some more</button>
+                    <button onclick="give_up()" type="button" class="btn btn-danger" data-dismiss="modal">Give
+                        Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demographic Modal -->
+    <div class="modal fade" id="demographic_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Demographics</h3>
+                </div>
+                <div class="modal-body" id="final-modal-body">
+                    <p>Please enter your age and gender.</p>
+
+                    <div class="form-group">
+                        <label for="gender_form">What is your gender?</label>
+                        <select class="form-control" id="gender_form">
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age_form">What is your age?</label>
+                        <input class="form-control" type="text" placeholder="Enter your age..." id="age_form">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button onclick="exit_demographic()" type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finished Modal -->
+    <div class="modal fade" id="finished_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Thank You!</h3>
+                </div>
+                <div class="modal-body" id="final-modal-body">
+                    <p id="final_message">Thank you for participating in this study! Your survey code is: </p>
+                    <h5 id="finish_modal_uid" class="bold"></h5>
+                </div>
+
+                <div class="modal-body" id="gen-modal-body">
+                    <label for="feedback_textarea">(Optional): If you have any feedback on the study interface, or you experienced any issues, please share them here:</label>
+                    <textarea class="form-control" id="feedback_textarea" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submit_feedback_btn" class="btn btn-primary" onclick="save_user_feedback();">Submit feedback</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bug Report Modal -->
+    <div class="modal fade" id="bug_report_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="gen-modal-title">Report Issue</h3>
+                </div>
+                <div class="modal-body" id="gen-modal-body">
+                    <label for="bug_desc_textarea">Please describe the issue. If the issue persists and stops you from completing the study, please email <b>samacqua@mit.edu</b>.</label>
+                    <textarea class="form-control" id="bug_desc_textarea" rows="3" placeholder="describe the issue"></textarea>
+                </br>
+                    <label for="email-input">If you want, leave your email so that we can contact you about your issue.</label>
+                    <input id="email-input" type="text" class="form-control" placeholder="email">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="store_bug_report();" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS files -->
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+    <script src="js/jquery.highlight-within-textarea.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script src="js/speaker.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/grids.js"></script>
+    <script src="js/more_grids.js"></script>
+    <script src="js/fire.js"></script>
+    <script src="js/bandit.js"></script>
+    <script src="js/word_similarity.js"></script>
+
+    <!-- Don't allow exit from modal -->
+    <script>
+        $.fn.modal.prototype.constructor.Constructor.Default.backdrop = 'static';
+        $.fn.modal.prototype.constructor.Constructor.Default.keyboard = false;
+    </script>
+
+</body>
+
+</html>

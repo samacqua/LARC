@@ -1,0 +1,240 @@
+h1 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+hr {
+    background-color: darkslategray;
+}
+
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.col-md-4 {
+    background-color: gainsboro;
+    background-clip: padding-box;
+    border-radius: 15px;
+    border: 5px solid transparent;
+}
+
+#resize_control_btns {
+    background-color: gainsboro;
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+#toolbar_and_symbol_picker {
+    background-color: rgb(200, 200, 200);
+    border-radius: 5px;
+    padding: 10px;
+    float: left;
+}
+
+#edit_control_btns {
+    width: 100%;
+    float: left;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+#description-text {
+    background-color: inherit;
+}
+
+#edit_control_btns button {
+    margin-bottom: 8px;
+}
+
+#submit_quit_buttons {
+    float: left;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+#output_grid {
+    margin: 10px auto;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgb(204, 204, 204);
+    overflow: auto;
+    text-align: center;
+}
+
+#toolbar {
+    float: left;
+    margin-left: 10px;
+    width: 100%;
+}
+
+#toolbar div {
+    margin-right: 12px;
+    background-color: rgb(200, 200, 200);
+}
+
+label {
+    margin-left: 5px;
+}
+
+/*Task demonstration*/
+
+.pair_preview {
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgb(204, 204, 204);
+    overflow:hidden;
+    margin: 0;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#evaluation_input {
+    margin: 0;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgb(204, 204, 204);
+    overflow: auto;
+    width: 100%;
+}
+
+.input_container {
+    width: 45%;
+    margin: 0;
+    text-align: center;
+}
+
+.input_preview {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.output_container {
+    width: 45%;
+    margin: 0;
+    text-align: center;
+}
+
+.output_preview {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.arrow {
+    height: 100%;
+    width: 10%;
+    padding: 5px;
+}
+
+.alert {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 9999;
+    border-radius: 0px;
+    text-align: center;
+}
+
+#task_preview {
+    width: 100%;
+}
+
+.objective {
+    text-align: center;
+}
+
+.editable_grid {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+
+#objective-col {
+    background-color: rgb(231, 180, 231);
+    margin-top: 20px;
+    padding-top: 8px;
+    transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+}
+
+#feedback_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Progress bar */
+
+.progress {
+    color: green;
+    width: 70%;
+    height: 25px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 5px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 25px;
+}
+
+#progress-bar-complete {
+    background-color: white;
+}
+
+.progress-meter {
+    min-height: 15px;
+    border-bottom: 2px solid rgb(160, 160, 160);
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 20px;
+}
+
+.progress-meter>.meter {
+    position: relative;
+    float: left;
+    min-height: 15px;
+    border-width: 0px;
+    border-style: solid;
+    border-color: rgb(160, 160, 160);
+}
+
+.progress-meter>.meter-left {
+    border-left-width: 2px;
+}
+
+.progress-meter>.meter-right {
+    float: right;
+    border-right-width: 2px;
+}
+
+.progress-meter>.meter-right:last-child {
+    border-left-width: 2px;
+}
+
+.progress-meter>.meter>.meter-text {
+    position: absolute;
+    display: inline-block;
+    bottom: -20px;
+    width: 100%;
+    font-weight: 700;
+    font-size: 0.85em;
+    color: rgb(160, 160, 160);
+    text-align: left;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.progress-meter>.meter.meter-right>.meter-text {
+    text-align: right;
+}
