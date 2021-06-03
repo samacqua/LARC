@@ -22,7 +22,7 @@ Citation
 }
 ```
 
-The original ARC data can be found here [The Abstraction and Reasoning Corpus github](https://github.com/fchollet/ARC)
+The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
 
 ## Contents
 - `dataset` contains the language-annotated ARC tasks and successful natural program phrase annotations
