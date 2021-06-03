@@ -58,7 +58,10 @@ function use_user_preferences() {
         toggle_dark_mode();
     }
 
-    CUR_SHAPE = parseInt(localStorage.getItem('shape_mode') || 2);
+    CUR_SHAPE = parseInt(localStorage.getItem('shape_mode'));
+    if (isNaN(CUR_SHAPE)) {
+        CUR_SHAPE = 2;
+    }
     toggle_cell_shape();
 }
 
