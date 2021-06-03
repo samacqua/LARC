@@ -308,7 +308,7 @@ function createDescsPager(descriptions) {
     $("#descriptions-pager").empty();
     $.each(descriptions, (i, desc) => {
         let row = $(`<a class="list-group-item list-group-item-action neumorphic-list-item" data-toggle="list" role="tab" 
-            href="description.html?task=${TASK_ID}&id=${desc.id}">Description ${i}</a>`);
+            href="description.html?task=${TASK_ID}&id=${desc.id}">Description ${i+1}</a>`);
         $("#descriptions-pager").append(row);
     });
 

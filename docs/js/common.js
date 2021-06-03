@@ -120,3 +120,6 @@ function array_copy(arr) {
 function object_copy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+function find_obj(arr, prop, val) {
+    return arr.find(o =>  o[prop] == val);
+}
