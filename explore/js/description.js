@@ -1,10 +1,35 @@
 var CUR_DESC;
+var PASSIVE_SUPPORTED = false;
 
 $(window).on('load', function () {
     const { task, desc_id } = parseUrl(window.location.search);
 
+    // check if passive events are supported (for performance) https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+    try {
+        const options = {
+            get passive() { // This function will be called when the browser
+                            //   attempts to access the passive property.
+                PASSIVE_SUPPORTED = true;
+                return false;
+            }
+        };
+
+        window.addEventListener("test", null, options);
+        window.removeEventListener("test", null, options);
+    } catch(err) {
+        PASSIVE_SUPPORTED = false;
+    }
+
     load_new_desc(task, desc_id);
     use_user_preferences();
+
+    // show layout if first time visiting
+    if (localStorage.getItem('visited_description') != 'true') {
+        setTimeout(() => {
+            start_walkthrough();
+        }, 1000);
+        localStorage.setItem('visited_description', 'true');
+    }
 });
 
 /**
@@ -60,6 +85,13 @@ var ACTION_SEQUENCE_INTERVALS = [];
 var ACTION_SEQUENCE_INTERVAL_FUNCTIONS = [];
 
 var GRAPH;
+var GRAPH_SETTINGS = {
+    scalingRatio: 1e5,
+    strongGravityMode: true,
+    gravity: 0.2,
+    slowDown: 50,
+    startingIterations: 0,
+};
 var BUILDS = [];
 
 /**
@@ -120,10 +152,10 @@ function load_new_desc(task, desc_id) {
 
             const builds = load_desc_builds(desc);
             $("#builds-header").text("Builds (" + builds.length.toString() + ")");
-            builds.sort((a, b) => { return (a.timestamp.seconds < b.timestamp.seconds ? -1 : 1) });
+            builds.sort((a, b) => { return (a < b ? -1 : 1) });
             BUILDS = builds;
             $.each(builds, (i, build) => {
-                $(`<h4>Builder ${i+1} — ${build.uid} <button class="neumorphic-btn play-btns" onclick="show_build_info(${i});">ⓘ</button> </br></h4>`).appendTo($("#description-builds"));
+                $(`<h4>Builder ${i+1} <button class="neumorphic-btn play-btns" onclick="show_build_info(${i});">ⓘ</button> </br></h4>`).appendTo($("#description-builds"));
                 create_build_row(build);
             });
 
@@ -142,8 +174,8 @@ function load_new_desc(task, desc_id) {
                     nodeHoverPrecision: 10,
                     drawLabels: true,
                     labelThreshold: 1000, // so doesn't draw labels, turning off drawLabels turns off hover events
-                    minNodeSize: 3,
-                    maxNodeSize: 10,
+                    minNodeSize: 5,
+                    maxNodeSize: 13,
                     minEdgeSize: 1.5,
                     maxEdgeSize: 5,
                     edgesPowRatio: 0.5,
@@ -165,7 +197,7 @@ function load_new_desc(task, desc_id) {
                 slowDown: 1,
                 startingIterations: 200,
                 };
-                GRAPH.startForceAtlas2(force_settings);
+            GRAPH.startForceAtlas2(force_settings);
             setTimeout(function() { GRAPH.stopForceAtlas2(); }, 1000);
     
         }).catch(error => {
@@ -363,7 +395,7 @@ function show_desc_info() {
             'display_num_success', 'num_verification_attempts'].includes(key) || CUR_DESC[key] == undefined) {
             // pass
         } else if (key == 'timestamp') {
-            properties.push(`<li class="list-group-item"><b>${key}</b>: ${timeConverter(CUR_DESC[key].seconds)}</li>`);
+            properties.push(`<li class="list-group-item"><b>${key}</b>: ${timeConverter(CUR_DESC[key])}</li>`);
         } else {
             properties.push(`<li class="list-group-item"><b>${key}</b>: ${CUR_DESC[key]}</li>`);
         }
@@ -402,7 +434,7 @@ function show_build_info(i) {
         if (['attempt_jsons', 'action_sequence', 'desc_type', 'task', 'success'].includes(key) || build[key] == undefined) {
             // pass
         } else if (key == 'timestamp') {
-            properties.push(`<li class="list-group-item"><b>${key}</b>: ${timeConverter(build[key].seconds)}</li>`);
+            properties.push(`<li class="list-group-item"><b>${key}</b>: ${timeConverter(build[key])}</li>`);
         } else {
             properties.push(`<li class="list-group-item"><b>${key}</b>: ${build[key]}</li>`);
         }

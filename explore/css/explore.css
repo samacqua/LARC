@@ -94,6 +94,14 @@ body {
     box-shadow: 9px 9px 16px var(--lower-right-shadow), -9px -9px 16px var(--upper-left-shadow);
 }
 
+#graph_grid_hint {
+    margin-left: -100%;
+    margin-right: -100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1em;
+}
+
 .neumorphic-list-item, .neumorphic-list-item:hover, .list-group-item {
     border: none;
     background-color: var(--background-color);

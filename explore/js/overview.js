@@ -3,6 +3,14 @@ $(window).on('load', function () {
 
     load_new_task(task);
     use_user_preferences();
+
+    // show layout if first time visiting
+    if (localStorage.getItem('visited_overview') != 'true') {
+        setTimeout(() => {
+            start_walkthrough();
+        }, 1000);
+        localStorage.setItem('visited_overview', 'true');
+    }
 });
 
 /**
@@ -106,7 +114,7 @@ function load_new_task(task) {
         PAST_DESCS = descriptions;
         createDescsPager(descriptions);
 
-        summarize_descriptions(descriptions);
+        // summarize_descriptions(descriptions);
 
     }).catch(error => {
         errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email samacqua@mit.edu");

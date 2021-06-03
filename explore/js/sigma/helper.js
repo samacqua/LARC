@@ -73,7 +73,6 @@ function create_action_sequence_graph_from_builds(desc, builds) {
 
             // make red if checked incorrectly
             if (action.action.correct == false && existing_node.id != init_state_id ) {
-                console.log("Changing color!");
                 existing_node.color = '#FF595E';
             }
 
@@ -138,7 +137,6 @@ function create_action_sequence_graph_from_builds(desc, builds) {
 
                             // make red if checked incorrectly
             if (action.action.correct == false && existing_node.id != init_state_id) {
-                console.log("Changing color!");
                 existing_node.color = '#FF595E';
             }
 

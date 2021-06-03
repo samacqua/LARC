@@ -33,11 +33,11 @@
 
         <div class="row">
             <div class="col-lg-3">
-                <div class="sticky-top" data-intro="" data-position="left">
+                <div class="sticky-top" data-intro="" data-position="bottom">
                     </br>
 
-                    <button class="neumorphic-btn" id="task-title" onclick="load_tasks_to_browse();" data-toggle="modal" data-target="#browse-tasks-modal" data-intro='Choose different ARC tasks' data-position="right">Task</button>
-                    <div data-intro='Toggle dark mode, cell shape, action sequences, help menu' data-position="right">
+                    <button class="neumorphic-btn" id="task-title" onclick="load_tasks_to_browse();" data-toggle="modal" data-target="#browse-tasks-modal" data-intro='[select] a different ARC task' data-position="right">Task</button>
+                    <div data-intro='[toggle] dark mode, cell shape, action sequences, help menu, and description metadata' data-position="right">
                         <button id="dark-mode-btn" class="neumorphic-btn play-btns" onclick="toggle_dark_mode();">☾</button>
                         <button id="cell-mode-btn" class="neumorphic-btn play-btns" onclick="toggle_cell_shape();">●</button>
                         <button class="neumorphic-btn play-btns" id="play-btn" onclick="toggle_action_sequences();">‖</button>
@@ -48,11 +48,11 @@
                     <div id="test-io-preview" class="test-io" data-intro='test input-output for the current task' data-position="right"></div>
                     </br>
 
-                    <ul class="list-group" id="overview-group" data-intro='See the task examples and statistics about all task descriptions' data-position="right">
+                    <ul class="list-group" id="overview-group" data-intro='[click] to view the task input-output examples' data-position="right">
                         <a class="list-group-item list-group-item-action neumorphic-btn neumorphic-list-item" id="task-overview" data-toggle="list" role="tab" href="./">Overview</a>
                     </ul>
                     </br>
-                    <ul class="list-group" id="descriptions-pager" role="tablist" data-intro='Look at specific descriptions' data-position="right"></ul>
+                    <ul class="list-group" id="descriptions-pager" role="tablist" data-intro='[click] to see a specific description' data-position="bottom"></ul>
 
                 </div>
             </div>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col">
                         <h2 class="neumorphic-text">Describer Attempts</h2>
-                        <div id="verification-attempts" data-intro="The describer had 3 attempts to correctly solve the pattern to verify they understand the task." data-position="right"></div>
+                        <div id="verification-attempts" data-intro="the describer had 3 attempts to correctly solve the pattern to verify they understand the task, shown here." data-position="right"></div>
                         <div id="verification-grid"  data-intro="The describer's actions to verify the can solve the task." data-position="right">
                             <div class="editable_grid selectable_grid">
                                 <div class="grid_row">
@@ -95,10 +95,11 @@
 
                 </br>
                 <h2 class="neumorphic-text" id="builds-header">Builds</h2>
-                <div id="description-builds" data-intro="The submitted grids, and the sequence of actions, that each Turker took when interpreting this description." data-position="right"></div>
+                <div id="description-builds" data-intro="The submitted grids, and the sequence of actions, that each user took when interpreting this description." data-position="right"></div>
 
                 <h2 class="neumorphic-text">Action Sequence Graph</h2>
-                <p>Thank you to <a href="https://www.waikeenvong.com/arc/1f876c06_graph.html" style="color: #4da3ff; text-decoration: underline;">Wai Keen</a> for coming up with this visualization idea.</p>
+                <p>Thank you to <a href="https://www.waikeenvong.com" style="color: #4da3ff; text-decoration: underline;">Wai Keen</a> for coming up with this visualization idea.</p>
+                <p>Each node represents a grid state, and each edge represents an action a user took to modify the grid. Thicker edges and nodes represent multiple users.</p>
                 <div class="row">
                     <ul class="legend">
                         <li><span class="start_state_color node"></span> starting grid</li>
@@ -112,11 +113,12 @@
                         <li><span class="resize_output_grid_color edge">↗</span> resize output grid</li>
                         <li><span class="reset_output_grid_color edge">↗</span> reset output grid</li>
                     </ul>
-                    <div id="graph-container" data-intro="A depiction of all grid states (nodes) visited by all Turkers. Thicker edges and nodes represent multiple Turkers." data-position="right"></div>
+                    <div id="graph-container" data-intro="A depiction of all grid states (nodes) visited by all users." data-position="right"></div>
                     <div class="col-lg-4 offset-lg-4">
-                        <div id="action-sequence-cur-grid" class="single_grid">
+                        <div id="action-sequence-cur-grid" class="single_grid" data-intro="The grid of the currently selected node (after exiting the help overlay, hover over nodes in the graph to change)." data-position="right">
                             <div class="grid_inner_container"></div>
                         </div>
+                        <span id='graph_grid_hint'>(hover over nodes in the graph to show that node's grid)</span>
                     </div>
 
                 </div>
