@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="The creation process of descriptions for an MIT study on the efficacy of human communication of abstract patterns.">
+    <title>ARC labeling interface</title>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- CSS files -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/explore.css">
+    <link rel="stylesheet" type="text/css" href="css/grids.css">
+
+</head>
+
+<body>
+    <div class="container"> 
+        <div class="row">
+            <div class="col-lg-3">
+               <div class="sticky-top" data-intro="">
+                </br>
+
+                    <button class="neumorphic-btn" id="task-title" onclick="load_tasks_to_browse();" data-toggle="modal" data-target="#browse-tasks-modal" data-intro='Choose different ARC tasks' data-position="right">Task</button>
+                    <div data-intro='Toggle dark mode, cell shape, help menu' data-position="right">
+                        <button id="dark-mode-btn" class="neumorphic-btn play-btns" onclick="toggle_dark_mode();">☾</button>
+                        <button id="cell-mode-btn" class="neumorphic-btn play-btns" onclick="toggle_cell_shape();">●</button>
+                        <button id="cell-mode-btn" class="neumorphic-btn play-btns" onclick="start_walkthrough();">?</button>
+                    </div>
+                    </br> 
+
+                    <div id="test-io-preview" class="test-io" data-intro='test input-output for the current task' data-position="right"></div>
+                    </br>
+
+                    <ul class="list-group" data-intro='See the task examples and statistics about all task descriptions' data-position="right">
+                        <a class="list-group-item list-group-item-action neumorphic-btn active" style="pointer-events: none;"  data-toggle="list" role="tab" href="#overview">Overview</a>
+                    </ul>
+                    </br>
+                    <ul class="list-group" id="descriptions-pager" role="tablist" data-intro='Look at specific descriptions' data-position="right"></ul>
+                </div>
+
+            </div>
+            <div class="col-lg-9">
+            
+                </br>
+                <div class="row">
+                    <div class="col" data-intro="Input-output examples displaying a common pattern." data-position="right">
+                        <h3 class="neumorphic-text">Train</h3>
+                        <div id="task_preview" class="inner"></div>
+                    </div>
+                    <div class="col">
+                        <h3 class="neumorphic-text">Test</h3>
+                        <div id="test-io" class="test-io" data-intro="Given the training examples, the Turker must correctly create this output grid from this input grid." data-position="right"></div>
+
+                    </div>
+                </div>
+
+                </br>
+                <h2 class="neumorphic-text">Descriptions Overview</h2>
+                <div class="row" data-intro="A measure of how well each description was interpreted. A 1.0 success score means every user interpreted the description correctly on their first attempt." data-position="right">
+                    <h4 id="desc-count">Descriptions count: 0</h4>
+                    <canvas class="chart" id="desc-success-chart"></canvas>
+                </div>
+
+                <h2 class="neumorphic-text">Vocabulary</h2>
+                <div class="row" data-intro="See how frequently each word appears in the all of the descriptions for this task." data-position="right">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <canvas class="chart" id="see-desc-wc-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <canvas class="chart" id="do-desc-wc-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> 
+
+    <div class="modal modal-lg fade" id="browse-tasks-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLongTitle">List of Tasks</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        
+                <table id="table" data-height="460">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-field="preview">Test preview</th>
+                            <th scope="col" data-field="number">Task #</th>
+                            <th scope="col" data-field="descriptions"># Descriptions</th>
+                            <th scope="col" data-field="interactions"># Interactions</th>
+                            <th scope="col">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table"></tbody>
+                </table>
+        
+                <div class="modal-footer">
+                    <button type="button" class="btn neumorphic-btn" style="margin: 0px;" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- JS Libraries -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- JS files -->
+    <script src="js/overview.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/grids.js"></script>
+    <script src="js/more_grids.js"></script>
+    <script src="js/explore.js"></script>
+
+    <script src="js/chardinjs.min.js"></script>
+    <link href="css/chardinjs.css" rel="stylesheet">
+</body>
+
+</html>
