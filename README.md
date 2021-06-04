@@ -16,7 +16,10 @@ the *builder*, who must solve the task on the new input using the description al
 <img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="75%"/>
 </p>
 
-The entire dataset can be browsed by downloading this entire project, and spin up a server at the root directory `python3 -m http.server`
+The best way to browse the dataset is by downloading the entire project, and spin up a server at the root directory 
+
+`python3 -m http.server`
+
 and typing `localhost:8000/explore/` into chrome.
 
 The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
