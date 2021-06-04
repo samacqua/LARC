@@ -8,8 +8,8 @@ from scipy.stats import truncnorm
 
 # ======== THE ENVIRONMENT MODEL =========
 
-N = 10
-Budget = 16 * N
+N = 400
+Budget = 6 * N
 
 # sample a point from truncated norm
 def trunc_norm_sampler(lower, upper, mu, sigma):
@@ -20,13 +20,13 @@ def trunc_norm_sampler(lower, upper, mu, sigma):
 # make N casinos, each casino_i paramterized by a truncated normal such that:
 # different normal encodes different difficulties, all have 
 def make_casino_params():
-    # TODO : @Sam Look at this prior and see if it makes sense
+    # TODO : Look at this prior and see if it makes sense
     def make_param():
-        # lower and upper bound to the trunction, initially 0 to 1
+        # lower and upper bound to the trunction
         lower, upper = 0, 1
-        # take difficulty uniformly between 0.1 and 0.9, take spread to be 0.1 for now
+        # take difficulty uniformly between 0.1 and 0.9, take spread to be 0.2 for now
         mu = np.random.uniform(0.1, 0.9)
-        sigma = 0.1
+        sigma = 0.2
         return (lower, upper, mu, sigma)
     return [make_param() for _ in range(N)]
 
@@ -92,7 +92,7 @@ class CasEnv:
 
 
 # ========= A Naive Policy ==========
-class NaivePolicy:
+class RandPolicy:
 
     # for faster computation, cache the state-action pair
     def __init__(self):
@@ -112,14 +112,14 @@ class NaivePolicy:
     def guess(self, observations):
         ret = []
         for cas_ids, cas_obs in enumerate(observations):
-            ucbs = []
+            scores = []
             for (a,b) in cas_obs:
                 a, b = a+1, b+1
                 mean = a / (a + b)
-                var = a*b / ((a+b)**2 * (a+b+1))
+                # var = a*b / ((a+b)**2 * (a+b+1))
 
-                ucbs.append(mean)
-            ret.append(np.argmax(ucbs))
+                scores.append(mean)
+            ret.append(np.argmax(scores))
         return ret
 
 # ========= A Tile Strategy ===========
@@ -139,16 +139,25 @@ class TilePolicy(NaivePolicy):
             return (cas_id, poor_arm_id)
 
 
-# ========= A Jank Strategy ==========
-class JankPolicy(NaivePolicy):
-    # each casino fixed budget, within casino do ucb
+# ========= Infinite Arm Algorithm, but Tiling the Casino ==========
+class TileInfPolicy(NaivePolicy):
+    # each casino fixed budget, within casino do inf-arm-bandit
     #@cached
     def act(self, observations):
         interaction_per_cas = [sum([sum(arm_ob) for arm_ob in cas_ob]) for cas_ob in observations]
         cas_id = np.argmin(interaction_per_cas)
         cas_ob = observations[cas_id]
         cas_interactions = interaction_per_cas[cas_id]
-        if len(cas_ob) <= np.sqrt(cas_interactions):
+
+        best_mean = 0
+        for a,b in cas_ob:
+            a,b = a+1, b+1
+            arm_mean = a / (a+b)
+            best_mean = max(best_mean, arm_mean)
+
+        cas_difficulty = (1 - best_mean)
+
+        if len(cas_ob) <= cas_interactions ** cas_difficulty:
             return (cas_id, -1)
         else:
             ucbs = []
@@ -160,11 +169,11 @@ class JankPolicy(NaivePolicy):
                 ucbs.append(mean + np.sqrt(var))
             return (cas_id, np.argmax(ucbs))
 
-# ========= A Jank Strategy ==========
-class AdaptPolicy(NaivePolicy):
-    # select casino rule : pick casino with highest arm var of best arm
+# ========= Infinite Arm Algorithm, but with Entropy/Variance Casino Selection ==========
+class CasInfPolicy(NaivePolicy):
+    # select casino rule : pick casino with highest arm var of best arms
     def casino_scores(self, obs):
-        # @sam for you this should be the total minutes spent (adjusted by removing outliers)
+        # for you this should be the total minutes spent (adjusted by removing outliers)
         # for this mock-up, for each casino, get its total number of interactions as efforts 
         # i.e. each interaction (build or describe) takes 1 minutes effectively
         total_efforts = [sum([sum(arm_ob) for arm_ob in cas_obs]) + 1 for cas_obs in obs]
@@ -177,6 +186,7 @@ class AdaptPolicy(NaivePolicy):
             if cas_obs == []:
                 cas_obs = [(0,0)]
 
+            # get how good the arms are w.r.t. mean
             best_arms = []
             for (a,b) in cas_obs:
                 a = a + 1
@@ -184,13 +194,22 @@ class AdaptPolicy(NaivePolicy):
                 mean = a / (a+b)
                 best_arms.append(mean)
 
-            best_arm_id = np.argmax(best_arms)
-            best_a, best_b = cas_obs[best_arm_id]
-            a = best_a + 1
-            b = best_b + 1
+            # take the top half of the best means
+            sorted_arm_ids = sorted(range(len(best_arms)), key=lambda x:-best_arms[x])
+            top_half = sorted_arm_ids[:len(sorted_arm_ids)//2]
+
+            top_half_a = 0
+            top_half_b = 0
+            for top_id in top_half:
+                arm_a, arm_b = cas_obs[top_id]
+                top_half_a += arm_a
+                top_half_b += arm_b
+
+            a = top_half_a + 1
+            b = top_half_b + 1
             var = a*b / ((a+b)**2 * (a+b+1))
 
-            # adjust the benefits – the variance – with the current efforts spend
+            # adjust the benefits – the variance with the current efforts spend
             # doing so ensures that no single task would be too heavily dependent on
             the_score = var / efforts_ratio[cas_id]
             cas_scores.append(the_score)
@@ -203,13 +222,13 @@ class AdaptPolicy(NaivePolicy):
 
         best_arms = []
         for (a,b) in cas_obs:
+            a,b = a+1, b+1
             mean = a / (a+b)
             best_arms.append(mean)
 
         return max(best_arms)
 
     def act(self, observations):
-        # print (observations)
         # selecting a casino
         cas_scores = self.casino_scores(observations)
         cas_id = np.argmax(cas_scores)
@@ -238,86 +257,6 @@ class AdaptPolicy(NaivePolicy):
                 candidate_arm_id = -1
             return cas_id, candidate_arm_id
 
-# ========= A Jank Strategy ==========
-class AdaptPolicy2(NaivePolicy):
-    # select casino rule : pick casino with highest arm var of best arm
-    def casino_scores(self, obs):
-        # @sam for you this should be the total minutes spent (adjusted by removing outliers)
-        # for this mock-up, for each casino, get its total number of interactions as efforts 
-        # i.e. each interaction (build or describe) takes 1 minutes effectively
-        total_efforts = [sum([sum(arm_ob) for arm_ob in cas_obs]) + 1 for cas_obs in obs]
-        avg_efforts = np.mean(total_efforts)
-        efforts_ratio = [x / avg_efforts for x in total_efforts]
-
-        cas_scores = []
-        for cas_id, cas_obs in enumerate(obs):
-
-            if cas_obs == []:
-                cas_obs = [(0,0)]
-
-            best_arms = []
-            for (a,b) in cas_obs:
-                a = a + 1
-                b = b + 1
-                mean = a / (a+b)
-                best_arms.append((mean, a, b))
-
-            sorted_arms = sorted(best_arms)
-            # get the latter half
-            better_half = sorted_arms[len(best_arms) // 2 :]
-            best_a = sum([x[0] for x in better_half])
-            best_b = sum([x[1] for x in better_half])
-            a = best_a + 1
-            b = best_b + 1
-            var = a*b / ((a+b)**2 * (a+b+1))
-
-            # adjust the benefits – the variance – with the current efforts spend
-            # doing so ensures that no single task would be too heavily dependent on
-            the_score = var / efforts_ratio[cas_id]
-            cas_scores.append(the_score)
-        return cas_scores
-
-    # get casino difficulty : estimated as the mean of the best arm
-    def best_cas_mean(self, cas_obs):
-        if cas_obs == []:
-            cas_obs = [(1,1)]
-
-        best_arms = []
-        for (a,b) in cas_obs:
-            mean = a / (a+b)
-            best_arms.append(mean)
-
-        return max(best_arms)
-
-    def act(self, observations):
-        # print (observations)
-        # selecting a casino
-        cas_scores = self.casino_scores(observations)
-        cas_id = np.argmax(cas_scores)
-
-        # within a specific casino, do something
-        cas_ob = observations[cas_id]
-        cas_interactions = sum([sum(arm_ob) for arm_ob in cas_ob])
-        best_arm_mean = self.best_cas_mean(cas_ob)
-
-        difficulty = 1 - best_arm_mean
-
-        # if this inequality holds, increase arm : i.e. more difficult = more arms
-        if len(cas_ob) <= cas_interactions ** difficulty:
-            return (cas_id, -1)
-        else:
-            ucbs = []
-            for (a,b) in cas_ob:
-                a = a + 1
-                b = b + 1
-                mean = a / (a + b)
-                var = a*b / ((a+b)**2 * (a+b+1))
-                ucbs.append(mean + np.sqrt(var))
-            candidate_arm_id = np.argmax(ucbs)
-            # filter out pulling (0,r) arms, i.e. arm that has only failures inside
-            if cas_ob[candidate_arm_id][0] == 0:
-                candidate_arm_id = -1
-            return cas_id, candidate_arm_id
 
 # ========== Interacting Between Env and Policy ===========
 def roll_out(env, policy):
@@ -330,15 +269,16 @@ def roll_out(env, policy):
 
 if __name__ == '__main__':
 
-    policies = [NaivePolicy(), TilePolicy(), JankPolicy(), AdaptPolicy(), AdaptPolicy2()]
-    cums = [0 for _ in policies]
+    policies = [RandPolicy(), TilePolicy(), TileInfPolicy(), CasInfPolicy()]
+    cums = [[] for _ in policies]
     for i in range(100):
         cas_par = make_casino_params()
         env = CasEnv(cas_par)
         for j in range(len(cums)):
             policy = policies[j]
             reward = roll_out(env, policy)
-            cums[j] += reward
+            cums[j] += [reward]
 
-
-        print (f"gainz {cums}")
+        print ("-------------")
+        for result in cums:
+            print (np.mean(result), np.std(result))
