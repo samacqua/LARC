@@ -126,24 +126,39 @@ function loadJSONTask(train, test) {
 
 function get_task(task_index) {
     return new Promise(function (resolve, reject) {
-        var subset = "training";
-        $.getJSON("data/" + subset, function (tasks) {
-            var task = tasks[task_index];
-            $.getJSON(task["download_url"], function (json) {
-                return resolve(json);
-            });
+        const path = '../dataset/tasks_json/' + task_index + '.json';
+        $.getJSON(path, function (task) {
+            return resolve(task);
         }); 
     });
 }
 
 function get_task_paths() {
-    return new Promise(function (resolve, reject) {
-        var subset = "training";
-        $.getJSON("data/" + subset, function (tasks) {
-            return resolve(tasks.map(x => x.path));
-        }); 
-    });
+    return TASKS.map(x => '../dataset/tasks_json/' + x + '.json');
 }
+
+
+// broke for some reason
+// function get_task(task_index) {
+//     return new Promise(function (resolve, reject) {
+//         var subset = "training";
+//         $.getJSON("data/" + subset, function (tasks) {
+//             var task = tasks[task_index];
+//             $.getJSON(task["download_url"], function (json) {
+//                 return resolve(json);
+//             });
+//         }); 
+//     });
+// }
+
+// function get_task_paths() {
+//     return new Promise(function (resolve, reject) {
+//         var subset = "training";
+//         $.getJSON("data/" + subset, function (tasks) {
+//             return resolve(tasks.map(x => x.path));
+//         }); 
+//     });
+// }
 
 function loadTask(task_index) {
     return new Promise(function (resolve, reject) {
