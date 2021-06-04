@@ -87,7 +87,7 @@ $(window).on('load', function () {
             }
         }).catch(error => {
             console.error(error);
-            errorMsg("Failed to load the task. Please ensure your internet connection and try again. If the issue persists, please email samacqua@mit.edu");
+            errorMsg("Failed to load the task. Please ensure your internet connection and try again. If the issue persists, please email [anonymous author]@[anonymous institution].edu");
         });
         $('#instructionsModal').modal('show');
     }

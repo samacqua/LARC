@@ -13,7 +13,7 @@ one participant, the *describer* solves an ARC task and describes the solution t
 the *builder*, who must solve the task on the new input using the description alone. 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="75%"/>
+<img src="assets/collection.jpg" alt="drawing" width="75%"/>
 </p>
 
 The best way to browse the dataset is by downloading the entire project, and spin up a server at the root directory 
@@ -21,6 +21,8 @@ The best way to browse the dataset is by downloading the entire project, and spi
 `python3 -m http.server`
 
 and typing `localhost:8000/explore/` into chrome.
+
+Similarly, to explore the collection interface and view the instructions that study participants saw, navigate to `localhost:8000/collection/` after setting up a local server.
 
 The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
 

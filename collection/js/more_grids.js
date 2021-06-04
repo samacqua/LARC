@@ -127,7 +127,7 @@ function loadJSONTask(train, test) {
 function get_task(task_index) {
     return new Promise(function (resolve, reject) {
         var subset = "training";
-        $.getJSON("https://api.github.com/repos/samacqua/ARC-Turks/contents/data/" + subset, function (tasks) {
+        $.getJSON("data/" + subset, function (tasks) {
             var task = tasks[task_index];
             $.getJSON(task["download_url"], function (json) {
                 return resolve(json);
@@ -139,7 +139,7 @@ function get_task(task_index) {
 function get_task_paths() {
     return new Promise(function (resolve, reject) {
         var subset = "training";
-        $.getJSON("https://api.github.com/repos/samacqua/ARC-Turks/contents/data/" + subset, function (tasks) {
+        $.getJSON("data/" + subset, function (tasks) {
             return resolve(tasks.map(x => x.path));
         }); 
     });

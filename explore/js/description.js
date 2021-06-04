@@ -201,7 +201,7 @@ function load_new_desc(task, desc_id) {
             setTimeout(function() { GRAPH.stopForceAtlas2(); }, 1000);
     
         }).catch(error => {
-            errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email samacqua@mit.edu");
+            errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email [anonymous author]@[anonymous institution].edu");
             console.error(error);
         });
     });

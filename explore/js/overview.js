@@ -117,7 +117,7 @@ function load_new_task(task) {
         // summarize_descriptions(descriptions);
 
     }).catch(error => {
-        errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email samacqua@mit.edu");
+        errorMsg("Failed to load past task descriptions. Please ensure your internet connection, and retry. If the issue persists, please email [anonymous author]@[anonymous institution].edu");
         console.error(error);
     });
 }
