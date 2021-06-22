@@ -19,7 +19,12 @@ The entire dataset can be browsed at [the explorer interface](https://samacqua.g
 
 Citation
 ```
-tbd
+@article{acquaviva2021communicating,
+  title={Communicating Natural Programs to Humans and Machines},
+  author={Acquaviva, Samuel and Pu, Yewen and Kryven, Marta and Wong, Catherine and Ecanow, Gabrielle E and Nye, Maxwell and Sechopoulos, Theodoros and Tessler, Michael Henry and Tenenbaum, Joshua B},
+  journal={arXiv preprint arXiv:2106.07824},
+  year={2021}
+}
 ```
 
 The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
