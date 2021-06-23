@@ -60,7 +60,7 @@ function updateUrl(response) {
         console.log(response);
 
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-        document.title = "ARC Data: " + response.task.toString();
+        document.title = "LARC: " + response.task.toString();
 
         load_new_task(response.task);
 

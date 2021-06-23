@@ -75,7 +75,7 @@ function updateUrl(response) {
         searchParams.set("id", response.desc_id);
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         load_new_desc(response.task, response.desc_id);
-        document.title = "ARC Data: " + response.task.toString();
+        document.title = "LARC: " + response.task.toString();
         window.history.pushState({"task": response.task, "desc_id": response.desc_id, "pageTitle": document.title}, "", newRelativePathQuery);
     }
 }
