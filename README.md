@@ -1,13 +1,13 @@
 # Language-complete Abstraction and Reasoning Corpus (LARC)
 
-This repository contains the language annotated data with supporting assets for LARC
+This repository contains the LARC dataset and supporting assets
 
 *"How can we build intelligent systems that achieve human-level performance on challenging and structured domains (like ARC), with or without additional human guidance? We posit the answer may be found in studying natural programs - instructions humans give to each other to communicate how to solve a task. Like a computer program, these instructions can be reliably "executed" by others to produce intended outputs."*
 
 A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824)
 
 LARC is curated from a communication game, where 
-one participant, the *describer* solves an ARC task and describes the solution to a different participant, 
+one participant, the *describer* solves an [ARC task](https://github.com/fchollet/ARC) and describes the solution to a different participant, 
 the *builder*, who must solve the task on the new input using the description alone. 
 The successful descriptions are "language-complete" in a sense that it fully captures the underlying ARC task in the absence of the original input-output examples.
 
