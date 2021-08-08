@@ -1,4 +1,4 @@
-# Language-annotated Abstraction and Reasoning Corpus (LARC)
+# Language-complete Abstraction and Reasoning Corpus (LARC)
 
 This repository contains the language annotated data with supporting assets for LARC
 
@@ -6,9 +6,10 @@ This repository contains the language annotated data with supporting assets for 
 
 A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824)
 
-Annotations in LARC takes the form of a communication game, where 
+LARC is curated from a communication game, where 
 one participant, the *describer* solves an ARC task and describes the solution to a different participant, 
 the *builder*, who must solve the task on the new input using the description alone. 
+The successful descriptions are "language-complete" in a sense that it fully captures the underlying ARC task in the absence of the original input-output examples.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="75%"/>
@@ -30,7 +31,7 @@ Citation
 The original ARC data can be found here [The Abstraction and Reasoning Corpus](https://github.com/fchollet/ARC)
 
 ## Contents
-- `dataset` contains the language-annotated ARC tasks and successful natural program phrase annotations
+- `dataset` contains the language-complete ARC tasks and successful natural program phrase annotations
 - `explorer` contains the explorer code that allows for easy browsing of the annotated tasks
 - `collection` contains the source code used to curate the dataset
 - `bandit` contains the formulation and environment for bandit algorithm used for collection
