@@ -42,4 +42,4 @@ language-guided program synthesis code can be found [here](https://github.com/th
 
 The [dataset](https://github.com/samacqua/LARC/tree/main/dataset) is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-All supporting code follows the [MIT License](https://github.com/samacqua/LARC/blob/main/LICENSE)
+All supporting code follows the [MIT License](https://opensource.org/licenses/MIT)
