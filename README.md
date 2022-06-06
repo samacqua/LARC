@@ -36,3 +36,4 @@ The original ARC data can be found here [The Abstraction and Reasoning Corpus](h
 - `collection` contains the source code used to curate the dataset
 - `bandit` contains the formulation and environment for bandit algorithm used for collection
 
+language-guided program synthesis code can be found [here](https://github.com/theosech/ec/tree/language-guided_program_synthesis_for_larc)
