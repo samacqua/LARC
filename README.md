@@ -8,7 +8,7 @@ Here's a [quick 5 minutes slideslive video explaining this work](https://recorde
 
 *"How can we build intelligent systems that achieve human-level performance on challenging and structured domains (like ARC), with or without additional human guidance? We posit the answer may be found in studying natural programs - instructions humans give to each other to communicate how to solve a task. Like a computer program, these instructions can be reliably "executed" by others to produce intended outputs."*
 
-A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824)
+A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines (Neurips Dataset and Benchmark, 2022)](https://arxiv.org/abs/2106.07824)
 
 LARC is curated from a communication game, where 
 one participant, the *describer* solves an [ARC task](https://github.com/fchollet/ARC) and describes the solution to a different participant, 
@@ -18,8 +18,6 @@ The successful descriptions are "language-complete" in a sense that it fully cap
 <p align="center">
 <img src="https://raw.githubusercontent.com/samacqua/LARC/main/assets/collection.jpg" alt="drawing" width="75%"/>
 </p>
-
-The entire dataset can be browsed at [the explorer interface](https://samacqua.github.io/LARC/explore) or by downloading the project and run `python3 -m http.server` from the root directory and point to `localhost:8000/explore/` from your browser.
 
 
 Citation
