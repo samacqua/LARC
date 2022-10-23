@@ -4,6 +4,8 @@ This repository contains the LARC dataset and supporting assets
 
 The entire dataset can be browsed at [the explorer interface](https://samacqua.github.io/LARC/explore) take a look!
 
+Here's a [quick 5 minutes slideslive video explaining this work](https://recorder-v3.slideslive.com/#/share?share=75868&s=71a5a42e-dceb-4055-9ae7-9bfccd4ffc1f)
+
 *"How can we build intelligent systems that achieve human-level performance on challenging and structured domains (like ARC), with or without additional human guidance? We posit the answer may be found in studying natural programs - instructions humans give to each other to communicate how to solve a task. Like a computer program, these instructions can be reliably "executed" by others to produce intended outputs."*
 
 A comprehensive view of this dataset and its goals can be found in [Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824)
