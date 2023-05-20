@@ -40,6 +40,8 @@ The original ARC data can be found here [The Abstraction and Reasoning Corpus](h
 
 language-guided program synthesis code can be found [here](https://github.com/theosech/ec/tree/language-guided_program_synthesis_for_larc)
 
+GPT4 (vision only) program induction results can be found [here](https://github.com/evanthebouncy/larc_gpt4)
+
 ## License
 
 The [dataset](https://github.com/samacqua/LARC/tree/main/dataset) is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
